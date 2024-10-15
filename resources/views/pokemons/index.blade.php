@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="index-page">
         <a class="btn btn-primary" href="http://127.0.0.1:8000/">Back</a>
         <a class="btn btn-primary float-end" href="{{ route('pokemon.create') }}">Add New</a>
         <main>
@@ -15,17 +15,15 @@
                         <th>Primary Type</th>
                         <th>weight</th>
                         <th>Height</th>
-                        <th>Hp</th>
-                        <th>Attack</th>
-                        <th>Defense</th>
+                        <th>Power</th>
                         <th>Is Legendary</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach ($pokemon as $pokemon)
+                    @foreach ($pokemons as $pokemon)
                         <tr>
-                            <td>{{ $pokemon->id }}</td>
+                            <td>#{{ str_pad($pokemon->id, 4, '0', STR_PAD_LEFT) }}</td>
                             <td> <img src="{{ Storage::url($pokemon->photo) }}"class="img-thumbnail w-50"></td>
                             <td>
                                 <a href="{{ route('pokemon.show', $pokemon) }}">
@@ -36,10 +34,12 @@
                             <td>{{ $pokemon->primary_type }}</td>
                             <td>{{ $pokemon->weight }}</td>
                             <td>{{ $pokemon->height }}</td>
-                            <td>{{ $pokemon->hp }}</td>
-                            <td>{{ $pokemon->attack }}</td>
-                            <td>{{ $pokemon->defense }}</td>
-                            <td>{{ $pokemon->is_legendary }}</td>
+                            <td>
+                                HP : {{ $pokemon->hp }}<br>
+                                Attack : {{ $pokemon->attack }}<br>
+                                Defense : {{ $pokemon->defense }}
+                            </td>
+                            <td>{{ $pokemon->is_legendary ? 'Yes' : 'No' }}</td>
                             <td>
                                 <div class="btn-group" role="group">
                                     <a class="btn btn-warning" href="{{ route('pokemon.edit', $pokemon) }}">
@@ -56,7 +56,10 @@
                     @endforeach
                 </tbody>
             </table>
-            {{ $pokemon->links() }}
+
+            <div class="d-flex justify-content-between">
+                {{ $pokemons->links('pagination::bootstrap-4', ['class' => 'btn btn-sm']) }}
+            </div>
         </main>
     </div>
 @endsection
